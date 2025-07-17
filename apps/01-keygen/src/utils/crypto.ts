@@ -17,12 +17,14 @@ export interface StoredKeyPair {
 
 // Error types for better error handling
 export class CryptoError extends Error {
-  constructor(message: string, public readonly cause?: Error) {
+  public readonly cause?: Error;
+
+  constructor(message: string, cause?: Error) {
     super(message);
     this.name = 'CryptoError';
+    this.cause = cause;
   }
 }
-
 export class UnsupportedBrowserError extends CryptoError {
   constructor(
     message: string = 'Your browser does not support the required cryptographic features'
@@ -68,18 +70,7 @@ export async function generateKeyPair(): Promise<CryptoKeyPair> {
       true, // extractable
       ['sign', 'verify']
     );
-
-    // Ed25519 always returns a CryptoKeyPair, but TypeScript doesn't know this
-    if (
-      !keyPair ||
-      typeof keyPair !== 'object' ||
-      !('publicKey' in keyPair) ||
-      !('privateKey' in keyPair)
-    ) {
-      throw new KeyGenerationError('Generated key is not a valid keypair');
-    }
-
-    return keyPair as CryptoKeyPair;
+    return keyPair;
   } catch (error) {
     if (error instanceof CryptoError) {
       throw error;
@@ -257,7 +248,7 @@ export async function importKeyPair(keyData: KeyPairData): Promise<CryptoKeyPair
 }
 
 /**
- * Check if Web Crypto API and Ed25519 are supported
+ * Check if Web Crypto API are supported
  * @returns boolean - True if supported, false otherwise
  */
 export function isWebCryptoSupported(): boolean {
@@ -279,4 +270,13 @@ export async function isEd25519Supported(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/**
+ * Check if both Web Crypto API and Ed25519 are supported.
+ * @returns Promise<boolean>
+ */
+export async function isWebCryptoAndEd25519Supported(): Promise<boolean> {
+  if (!isWebCryptoSupported()) return false;
+  return await isEd25519Supported();
 }

@@ -146,7 +146,7 @@ describe('Crypto Utilities', () => {
     });
 
     it('should throw KeyGenerationError for invalid keypair', async () => {
-      mockCrypto.subtle.generateKey.mockResolvedValue(null);
+      mockCrypto.subtle.generateKey.mockRejectedValue(null);
 
       await expect(generateKeyPair()).rejects.toThrow(KeyGenerationError);
     });

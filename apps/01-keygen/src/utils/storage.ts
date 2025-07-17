@@ -9,9 +9,12 @@ const STORAGE_KEY = 'keypair';
 
 // Error types for storage operations
 export class StorageError extends Error {
-  constructor(message: string, public readonly cause?: Error) {
+  public readonly cause?: Error;
+
+  constructor(message: string, cause?: Error) {
     super(message);
     this.name = 'StorageError';
+    this.cause = cause;
   }
 }
 
