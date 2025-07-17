@@ -1,0 +1,28 @@
+# ⚠️ Auto-generated via `pnpm run structure`. Do not edit manually.
+
+mesh-labs
+├── README.md
+├── apps
+│   ├── 01-keygen
+│   │   ├── README.md
+│   │   ├── eslint.config.js
+│   │   ├── index.html
+│   │   ├── package.json
+│   │   ├── public
+│   │   ├── roadmap.md
+│   │   ├── src
+│   │   ├── tsconfig.app.json
+│   │   ├── tsconfig.json
+│   │   ├── tsconfig.node.json
+│   │   └── vite.config.ts
+│   ├── 02-qr-bind
+│   ├── 03-invite-mint
+│   ├── 04-user-dashboard
+│   ├── 05-ip-pool-manager
+│   ├── 06-p2p-chat
+│   └── 07-node-sync
+├── package.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── roadmap.md
+└── structure.txt

@@ -1,0 +1,12 @@
+# Ignore node modules
+node_modules/
+**/node_modules/
+
+# Ignore build output
+dist/
+*.log
+
+# IDE/OS-specific
+.DS_Store
+.vscode/
+.kiro/

@@ -1,0 +1,13 @@
+{
+  "name": "mesh-labs",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "echo 'Run dev from individual apps'",
+    "build": "echo 'Run build from individual apps'",
+    "structure": "echo '# ⚠️ Auto-generated via `pnpm run structure`. Do not edit manually.' > structure.txt && echo '' >> structure.txt && treee -L 3 -I node_modules >> structure.txt"
+  },
+  "devDependencies": {
+    "tree-node-cli": "^1.6.0"
+  }
+}
