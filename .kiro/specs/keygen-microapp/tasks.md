@@ -59,9 +59,9 @@
     - Ensure private key is never displayed in the UI
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 6.1_
 
-- [ ] 5. Implement key generation functionality
+- [x] 5. Implement key generation functionality
 
-  - [ ] 5.1 Add keypair generation with user feedback
+  - [x] 5.1 Add keypair generation with user feedback
 
     - Connect generate button to crypto utility functions
     - Implement loading state during key generation
@@ -69,7 +69,7 @@
     - Add error handling and user feedback for generation failures
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-  - [ ] 5.2 Integrate automatic key persistence
+  - [x] 5.2 Integrate automatic key persistence
     - Automatically save generated keypair to localStorage
     - Update application state after successful storage
     - Handle storage errors gracefully with user feedback
