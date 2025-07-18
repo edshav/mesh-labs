@@ -42,9 +42,9 @@
     - Write unit tests for storage utility functions
     - _Requirements: 4.4, 5.2_
 
-- [ ] 4. Build core React components
+- [x] 4. Build core React components
 
-  - [ ] 4.1 Create App component with state management
+  - [x] 4.1 Create App component with state management
 
     - Set up React component with keypair state management
     - Implement loading and error state handling
@@ -52,7 +52,7 @@
     - Create handler functions for key operations (generate, copy, clear)
     - _Requirements: 4.2, 4.3, 4.4_
 
-  - [ ] 4.2 Implement KeyViewer component for key display and actions
+  - [x] 4.2 Implement KeyViewer component for key display and actions
     - Create component to display public key in Base64 format
     - Add conditional rendering for when no keys exist
     - Implement proper formatting for public key display

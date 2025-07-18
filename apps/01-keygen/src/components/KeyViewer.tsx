@@ -88,6 +88,7 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
       {/* Action buttons */}
       <div className="flex flex-wrap gap-3 justify-center pt-4">
         <button
+          aria-label="Generate a new Ed25519 keypair"
           onClick={onGenerate}
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
@@ -98,6 +99,7 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
         {/* Copy button - only shown when public key exists */}
         {publicKey && (
           <button
+            aria-label="Copy your public key to clipboard"
             onClick={onCopy}
             disabled={loading}
             className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
@@ -109,6 +111,7 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
         {/* Clear button - only shown when public key exists */}
         {publicKey && (
           <button
+            aria-label="Clear stored keypair from browser"
             onClick={onClear}
             disabled={loading}
             className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"

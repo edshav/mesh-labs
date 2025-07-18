@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { KeyViewer } from './components/KeyViewer';
 import { CryptoError, exportKeyPair, generateKeyPair, importKeyPair } from './utils/crypto';
 import {
   clearKeyPair as clearStoredKeyPair,
@@ -6,7 +7,6 @@ import {
   saveKeyPair,
   StorageError,
 } from './utils/storage';
-import { KeyViewer } from './components/KeyViewer';
 
 function App() {
   // State management for keypair operations
