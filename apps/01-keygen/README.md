@@ -31,25 +31,91 @@ Learn how to:
 
 ## 🧱 Tech Stack
 
-- React + TypeScript (via Vite)
-- Web Crypto API (SubtleCrypto)
-- Tailwind CSS (optional)
+- **React + TypeScript** (via Vite)
+- **Web Crypto API** (SubtleCrypto for Ed25519)
+- **Tailwind CSS** (for styling)
+- **Custom React Hooks** (for separation of concerns)
+- **Vitest + @testing-library/react** (for testing)
+- **pnpm workspaces** (monorepo management)
+
+## 🏗️ Architecture
+
+The app follows modern React patterns with custom hooks for separation of concerns:
+
+- **`useKeyPairState`** - Manages component state (loading, error, public key)
+- **`useKeyPairStorage`** - Handles loading stored keys on app initialization
+- **`useKeyPairGeneration`** - Manages keypair generation with error handling
+- **`useClipboard`** - Handles clipboard operations with fallbacks
+- **`useKeyPairClear`** - Manages clearing stored keypairs
+
+This architecture makes the code:
+
+- **Testable** - Each hook can be tested in isolation
+- **Reusable** - Hooks can be used in other components
+- **Maintainable** - Clear separation of responsibilities
+- **Type-safe** - Full TypeScript coverage
 
 ---
 
 ## 📦 Folder Structure
 
+```
 01-keygen/
 ├── public/
 ├── src/
-│ ├── components/
-│ │ └── KeyViewer.tsx
-│ ├── utils/
-│ │ └── crypto.ts
-│ ├── App.tsx
-│ └── main.tsx
+│   ├── components/
+│   │   └── KeyViewer.tsx       # Main UI component
+│   ├── hooks/                  # Custom React hooks
+│   │   ├── useKeyPairState.ts  # State management
+│   │   ├── useKeyPairStorage.ts # Storage operations
+│   │   ├── useKeyPairGeneration.ts # Key generation
+│   │   ├── useClipboard.ts     # Clipboard operations
+│   │   ├── useKeyPairClear.ts  # Clear operations
+│   │   └── __tests__/          # Hook tests
+│   ├── utils/
+│   │   ├── crypto.ts           # Crypto utilities
+│   │   └── storage.ts          # Storage utilities
+│   ├── test/
+│   │   └── setup.ts            # Test configuration
+│   ├── App.tsx
+│   └── main.tsx
 ├── package.json
+├── vite.config.ts
 └── README.md
+```
+
+---
+
+## 🛠️ Development
+
+This microapp is part of a pnpm workspace. You can run it in two ways:
+
+### From the app directory:
+
+```bash
+cd apps/01-keygen
+pnpm dev          # Start development server
+pnpm test         # Run tests
+pnpm build        # Build for production
+pnpm lint         # Run linter
+```
+
+### From the root directory:
+
+```bash
+pnpm --filter 01-keygen dev    # Start development server
+pnpm --filter 01-keygen test   # Run tests
+pnpm --filter 01-keygen build  # Build for production
+```
+
+### Testing
+
+The project includes comprehensive tests for all custom hooks and utilities:
+
+- **81 tests** covering all functionality
+- **Vitest** with jsdom environment
+- **@testing-library/react** for hook testing
+- **Mock implementations** for browser APIs
 
 ---
 

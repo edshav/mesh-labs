@@ -28,6 +28,40 @@ Each microapp focuses on core topics like:
 
 To deeply understand how to build a secure, decentralized, invitation-only network using frontend-first technologies and cryptographic primitives — and grow my engineering skills beyond traditional web development.
 
+## 🏗️ Project Structure
+
+This project uses **pnpm workspaces** to manage multiple microapps in a monorepo structure:
+
+```
+mesh-labs/
+├── apps/
+│   ├── 01-keygen/          # Key Generator microapp
+│   ├── 02-qr-linker/       # QR Linker microapp (planned)
+│   └── ...                 # Additional microapps
+├── packages/               # Shared packages (if needed)
+├── pnpm-workspace.yaml     # Workspace configuration
+└── package.json            # Root package.json
+```
+
+### 🛠️ Development Commands
+
+```bash
+# Install dependencies for all workspaces
+pnpm install
+
+# Run a specific microapp
+cd apps/01-keygen
+pnpm dev
+
+# Run commands from root for specific workspace
+pnpm --filter 01-keygen dev
+pnpm --filter 01-keygen test
+pnpm --filter 01-keygen build
+
+# Install dependencies for specific workspace
+pnpm --filter 01-keygen add <package-name>
+```
+
 ## 🚧 Status
 
 Work in progress. One microapp at a time.
