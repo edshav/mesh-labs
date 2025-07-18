@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 interface UseClipboardProps {
   publicKeyDisplay: string | null;
@@ -6,9 +6,11 @@ interface UseClipboardProps {
 }
 
 /**
- * Custom hook for clipboard operations
+ * Custom hook for clipboard operations with visual feedback
  */
 export function useClipboard({ publicKeyDisplay, setError }: UseClipboardProps) {
+  const [copySuccess, setCopySuccess] = useState<string | null>(null);
+
   const handleCopyPublicKey = useCallback(async (): Promise<void> => {
     if (!publicKeyDisplay) {
       setError('No public key available to copy.');
@@ -16,33 +18,26 @@ export function useClipboard({ publicKeyDisplay, setError }: UseClipboardProps) 
     }
 
     setError(null);
+    setCopySuccess(null);
 
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(publicKeyDisplay);
-      } else {
-        // Fallback for browsers without Clipboard API
-        const textArea = document.createElement('textarea');
-        textArea.value = publicKeyDisplay;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        textArea.focus();
-
-        try {
-          const successful = document.execCommand('copy');
-          if (!successful) {
-            throw new Error('Copy command failed');
-          }
-        } finally {
-          document.body.removeChild(textArea);
-        }
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        throw new Error('Clipboard API not supported');
       }
+
+      await navigator.clipboard.writeText(publicKeyDisplay);
+
+      // Show success feedback
+      setCopySuccess('Public key copied to clipboard!');
+
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setCopySuccess(null);
+      }, 3000);
     } catch {
-      setError('Unable to copy to clipboard. Please copy manually.');
+      setError('Unable to copy to clipboard. Your browser may not support this feature.');
     }
   }, [publicKeyDisplay, setError]);
 
-  return { handleCopyPublicKey };
+  return { handleCopyPublicKey, copySuccess };
 }

@@ -27,7 +27,7 @@ function App() {
   });
 
   // Handler function for copying public key to clipboard
-  const { handleCopyPublicKey } = useClipboard({
+  const { handleCopyPublicKey, copySuccess } = useClipboard({
     publicKeyDisplay,
     setError,
   });
@@ -53,6 +53,7 @@ function App() {
             onClear={handleClearKeypair}
             loading={isLoading}
             error={error}
+            copySuccess={copySuccess}
           />
         </div>
       </div>

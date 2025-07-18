@@ -78,7 +78,7 @@
 
 - [ ] 6. Add clipboard functionality for public key sharing
 
-  - [ ] 6.1 Implement copy to clipboard feature
+  - [x] 6.1 Implement copy to clipboard feature
 
     - Add copy button with clipboard API integration
     - Provide visual feedback for successful copy operations
@@ -86,7 +86,7 @@
     - Disable copy button when no public key exists
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 6.2 Add user feedback and accessibility features
+  - [x] 6.2 Add user feedback and accessibility features
     - Implement success/error messages for copy operations
     - Add proper ARIA labels for accessibility
     - Create keyboard navigation support

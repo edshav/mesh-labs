@@ -32,16 +32,10 @@ describe('useClipboard', () => {
 
     expect(mockWriteText).toHaveBeenCalledWith(testPublicKey);
     expect(mockSetError).toHaveBeenCalledWith(null);
+    expect(result.current.copySuccess).toBe('Public key copied to clipboard!');
   });
 
-  it('should use fallback method when Clipboard API is not available', async () => {
-    // Mock document.execCommand
-    const mockExecCommand = vi.fn().mockReturnValue(true);
-    Object.defineProperty(document, 'execCommand', {
-      value: mockExecCommand,
-      writable: true,
-    });
-
+  it('should handle missing Clipboard API', async () => {
     // Remove clipboard API
     Object.defineProperty(navigator, 'clipboard', {
       value: undefined,
@@ -59,8 +53,10 @@ describe('useClipboard', () => {
       await result.current.handleCopyPublicKey();
     });
 
-    expect(mockExecCommand).toHaveBeenCalledWith('copy');
-    expect(mockSetError).toHaveBeenCalledWith(null);
+    expect(mockSetError).toHaveBeenCalledWith(
+      'Unable to copy to clipboard. Your browser may not support this feature.'
+    );
+    expect(result.current.copySuccess).toBe(null);
   });
 
   it('should handle clipboard API errors', async () => {
@@ -81,18 +77,15 @@ describe('useClipboard', () => {
       await result.current.handleCopyPublicKey();
     });
 
-    expect(mockSetError).toHaveBeenCalledWith('Unable to copy to clipboard. Please copy manually.');
+    expect(mockSetError).toHaveBeenCalledWith(
+      'Unable to copy to clipboard. Your browser may not support this feature.'
+    );
+    expect(result.current.copySuccess).toBe(null);
   });
 
-  it('should handle fallback method errors', async () => {
-    const mockExecCommand = vi.fn().mockReturnValue(false);
-    Object.defineProperty(document, 'execCommand', {
-      value: mockExecCommand,
-      writable: true,
-    });
-
+  it('should handle missing writeText method', async () => {
     Object.defineProperty(navigator, 'clipboard', {
-      value: undefined,
+      value: {},
       writable: true,
     });
 
@@ -107,7 +100,10 @@ describe('useClipboard', () => {
       await result.current.handleCopyPublicKey();
     });
 
-    expect(mockSetError).toHaveBeenCalledWith('Unable to copy to clipboard. Please copy manually.');
+    expect(mockSetError).toHaveBeenCalledWith(
+      'Unable to copy to clipboard. Your browser may not support this feature.'
+    );
+    expect(result.current.copySuccess).toBe(null);
   });
 
   it('should handle missing public key', async () => {
@@ -123,5 +119,37 @@ describe('useClipboard', () => {
     });
 
     expect(mockSetError).toHaveBeenCalledWith('No public key available to copy.');
+    expect(result.current.copySuccess).toBe(null);
+  });
+
+  it('should clear success message after timeout', async () => {
+    vi.useFakeTimers();
+
+    const mockWriteText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: mockWriteText },
+      writable: true,
+    });
+
+    const { result } = renderHook(() =>
+      useClipboard({
+        publicKeyDisplay: testPublicKey,
+        setError: mockSetError,
+      })
+    );
+
+    await act(async () => {
+      await result.current.handleCopyPublicKey();
+    });
+
+    expect(result.current.copySuccess).toBe('Public key copied to clipboard!');
+
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+
+    expect(result.current.copySuccess).toBe(null);
+
+    vi.useRealTimers();
   });
 });
