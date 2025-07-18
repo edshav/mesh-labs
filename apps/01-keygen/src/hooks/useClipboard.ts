@@ -3,12 +3,13 @@ import { useCallback, useState } from 'react';
 interface UseClipboardProps {
   publicKeyDisplay: string | null;
   setError: (error: string | null) => void;
+  setClearSuccess?: (message: string | null) => void;
 }
 
 /**
  * Custom hook for clipboard operations with visual feedback
  */
-export function useClipboard({ publicKeyDisplay, setError }: UseClipboardProps) {
+export function useClipboard({ publicKeyDisplay, setError, setClearSuccess }: UseClipboardProps) {
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
 
   const handleCopyPublicKey = useCallback(async (): Promise<void> => {
@@ -19,6 +20,7 @@ export function useClipboard({ publicKeyDisplay, setError }: UseClipboardProps) 
 
     setError(null);
     setCopySuccess(null);
+    setClearSuccess?.(null);
 
     try {
       if (!navigator.clipboard || !navigator.clipboard.writeText) {
@@ -37,7 +39,7 @@ export function useClipboard({ publicKeyDisplay, setError }: UseClipboardProps) 
     } catch {
       setError('Unable to copy to clipboard. Your browser may not support this feature.');
     }
-  }, [publicKeyDisplay, setError]);
+  }, [publicKeyDisplay, setError, setClearSuccess]);
 
   return { handleCopyPublicKey, copySuccess };
 }

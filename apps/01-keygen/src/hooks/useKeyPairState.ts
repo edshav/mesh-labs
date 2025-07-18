@@ -7,6 +7,7 @@ export function useKeyPairState() {
   const [publicKeyDisplay, setPublicKeyDisplay] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [clearSuccess, setClearSuccess] = useState<string | null>(null);
 
   const clearError = () => setError(null);
 
@@ -21,5 +22,7 @@ export function useKeyPairState() {
     setError,
     clearError,
     setLoadingState,
+    clearSuccess,
+    setClearSuccess,
   };
 }

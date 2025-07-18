@@ -9,8 +9,16 @@ import {
 
 function App() {
   // State management for keypair operations
-  const { publicKeyDisplay, setPublicKeyDisplay, isLoading, setIsLoading, error, setError } =
-    useKeyPairState();
+  const {
+    publicKeyDisplay,
+    setPublicKeyDisplay,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    clearSuccess,
+    setClearSuccess,
+  } = useKeyPairState();
 
   // Load stored keys on app initialization
   useKeyPairStorage({
@@ -24,18 +32,21 @@ function App() {
     setPublicKeyDisplay,
     setIsLoading,
     setError,
+    setClearSuccess,
   });
 
   // Handler function for copying public key to clipboard
   const { handleCopyPublicKey, copySuccess } = useClipboard({
     publicKeyDisplay,
     setError,
+    setClearSuccess,
   });
 
   // Handler function for clearing stored keypair
   const { handleClearKeypair } = useKeyPairClear({
     setPublicKeyDisplay,
     setError,
+    setClearSuccess,
   });
 
   return (
@@ -54,6 +65,7 @@ function App() {
             loading={isLoading}
             error={error}
             copySuccess={copySuccess}
+            clearSuccess={clearSuccess}
           />
         </div>
       </div>

@@ -6,6 +6,7 @@ interface UseKeyPairGenerationProps {
   setPublicKeyDisplay: (key: string | null) => void;
   setIsLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setClearSuccess?: (message: string | null) => void;
 }
 
 /**
@@ -15,10 +16,12 @@ export function useKeyPairGeneration({
   setPublicKeyDisplay,
   setIsLoading,
   setError,
+  setClearSuccess,
 }: UseKeyPairGenerationProps) {
   const handleGenerateKeypair = useCallback(async (): Promise<void> => {
     setIsLoading(true);
     setError(null);
+    setClearSuccess?.(null);
 
     try {
       // Generate new keypair
@@ -41,7 +44,7 @@ export function useKeyPairGeneration({
     } finally {
       setIsLoading(false);
     }
-  }, [setPublicKeyDisplay, setIsLoading, setError]);
+  }, [setPublicKeyDisplay, setIsLoading, setError, setClearSuccess]);
 
   return { handleGenerateKeypair };
 }

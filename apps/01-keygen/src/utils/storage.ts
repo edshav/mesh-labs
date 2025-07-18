@@ -3,6 +3,7 @@
  */
 
 import type { KeyPairData, StoredKeyPair } from './crypto';
+import { generateSecureRandomString } from './security';
 
 // Storage key for localStorage
 const STORAGE_KEY = 'keypair';
@@ -139,7 +140,7 @@ export function loadKeyPair(): KeyPairData | null {
 }
 
 /**
- * Clear stored keypair from localStorage
+ * Clear stored keypair from localStorage with enhanced security measures
  * @throws StorageUnavailableError if localStorage is not available
  * @throws StorageError if clearing fails
  */
@@ -149,12 +150,109 @@ export function clearKeyPair(): void {
   }
 
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    // First, verify if a keypair exists before clearing
+    const existingData = localStorage.getItem(STORAGE_KEY);
+    const hadKeypair = existingData !== null;
+
+    // Security: Overwrite the storage location with random data before removal
+    // This helps prevent potential data recovery from browser storage
+    if (hadKeypair) {
+      // Generate random data of similar size to overwrite the storage location
+      const randomData = generateSecureRandomString(existingData.length);
+      localStorage.setItem(STORAGE_KEY, randomData);
+
+      // Immediately remove after overwriting
+      localStorage.removeItem(STORAGE_KEY);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
+    // Security audit logging (without exposing sensitive data)
+    logSecurityEvent('keypair_cleared', {
+      timestamp: Date.now(),
+      hadExistingKeypair: hadKeypair,
+      userAgent:
+        typeof navigator !== 'undefined' && navigator.userAgent
+          ? navigator.userAgent.substring(0, 50)
+          : 'unknown',
+    });
+
+    // Verify complete removal
+    const verificationData = localStorage.getItem(STORAGE_KEY);
+    if (verificationData !== null) {
+      // If data still exists, try one more removal attempt
+      localStorage.removeItem(STORAGE_KEY);
+      const finalVerification = localStorage.getItem(STORAGE_KEY);
+      if (finalVerification !== null) {
+        throw new StorageError('Failed to completely remove keypair from storage');
+      }
+    }
   } catch (error) {
+    if (error instanceof StorageError) {
+      throw error;
+    }
     if (error instanceof Error) {
       throw new StorageError(`Failed to clear keypair: ${error.message}`, error);
     }
     throw new StorageError('An unexpected error occurred while clearing the keypair');
+  }
+}
+
+/**
+ * Log security events for audit purposes (without exposing sensitive data)
+ * @param event - Type of security event
+ * @param metadata - Non-sensitive metadata about the event
+ */
+function logSecurityEvent(event: string, metadata: Record<string, unknown>): void {
+  try {
+    // Only log in development or when explicitly enabled
+    const shouldLog =
+      import.meta.env.DEV ||
+      (typeof window !== 'undefined' &&
+        window.localStorage.getItem('keygen_security_logging') === 'enabled');
+
+    if (shouldLog) {
+      console.log(`[SECURITY AUDIT] ${event}:`, {
+        ...metadata,
+        // Never log actual key data
+        note: 'This log contains no sensitive cryptographic material',
+      });
+    }
+
+    // Store security events in a separate localStorage key for audit trail
+    const auditKey = 'keygen_security_audit';
+    const existingAudit = localStorage.getItem(auditKey);
+    let auditLog = [];
+
+    try {
+      auditLog = existingAudit ? JSON.parse(existingAudit) : [];
+    } catch {
+      // If audit log is corrupted, start fresh
+      auditLog = [];
+    }
+
+    auditLog.push({
+      event,
+      timestamp: Date.now(),
+      metadata: {
+        ...metadata,
+        // Sanitize any potentially sensitive data
+        userAgent:
+          typeof metadata.userAgent === 'string' && metadata.userAgent
+            ? metadata.userAgent.substring(0, 50)
+            : undefined,
+      },
+    });
+
+    // Keep only the last 50 audit entries to prevent storage bloat
+    if (auditLog.length > 50) {
+      auditLog.splice(0, auditLog.length - 50);
+    }
+
+    localStorage.setItem(auditKey, JSON.stringify(auditLog));
+  } catch (error) {
+    // Silently fail logging to not interfere with main functionality
+    console.warn('Failed to log security event:', error);
   }
 }
 

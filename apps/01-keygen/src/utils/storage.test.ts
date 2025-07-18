@@ -345,6 +345,19 @@ describe('Storage Utilities', () => {
 
       expect(() => loadKeyPair()).toThrow(DataIntegrityError);
 
+      // Mock the removal behavior - first call returns corrupted data, subsequent calls return null
+      let callCount = 0;
+      localStorageMock.getItem.mockImplementation((key) => {
+        if (key === 'keypair') {
+          callCount++;
+          if (callCount === 1) {
+            return 'corrupted data'; // First call (checking existing data)
+          }
+          return null; // Subsequent calls (verification after removal)
+        }
+        return null;
+      });
+
       // Should still be able to clear corrupted data
       expect(() => clearKeyPair()).not.toThrow();
     });
