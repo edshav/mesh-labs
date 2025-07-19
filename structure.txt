@@ -5,6 +5,7 @@ mesh-labs
 ├── apps
 │   ├── 01-keygen
 │   │   ├── README.md
+│   │   ├── dist
 │   │   ├── eslint.config.js
 │   │   ├── index.html
 │   │   ├── package.json
@@ -12,6 +13,7 @@ mesh-labs
 │   │   ├── roadmap.md
 │   │   ├── src
 │   │   ├── tsconfig.app.json
+│   │   ├── tsconfig.app.tsbuildinfo
 │   │   ├── tsconfig.json
 │   │   ├── tsconfig.node.json
 │   │   └── vite.config.ts
@@ -22,6 +24,7 @@ mesh-labs
 │   ├── 06-p2p-chat
 │   └── 07-node-sync
 ├── package.json
+├── packages
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── roadmap.md
