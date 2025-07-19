@@ -115,9 +115,9 @@
     - Create responsive design for mobile devices
     - _Requirements: 2.3, 3.2, 5.3_
 
-- [ ] 9. Write unit tests for core functionality
+- [x] 9. Write unit tests for core functionality
 
-  - [ ] 9.1 Create unit tests for utility functions
+  - [x] 9.1 Create unit tests for utility functions
     - Write tests for all crypto utility functions
     - Test storage utility functions with mocked localStorage
     - _Requirements: All requirements need testing coverage_

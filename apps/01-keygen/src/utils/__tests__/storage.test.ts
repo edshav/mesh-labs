@@ -3,7 +3,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { KeyPairData } from './crypto';
+import type { KeyPairData } from '../crypto';
 import {
   clearKeyPair,
   DataIntegrityError,
@@ -13,7 +13,7 @@ import {
   saveKeyPair,
   StorageError,
   StorageUnavailableError,
-} from './storage';
+} from '../storage';
 
 // Mock localStorage
 const createLocalStorageMock = () => {

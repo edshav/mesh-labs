@@ -16,7 +16,7 @@ import {
   KeyImportExportError,
   UnsupportedBrowserError,
   type KeyPairData,
-} from './crypto';
+} from '../crypto';
 
 // Mock crypto.subtle for testing
 const mockCrypto = {
