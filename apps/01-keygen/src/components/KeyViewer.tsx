@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Tooltip } from './Tooltip';
 
 // Props interface for KeyViewer component
@@ -16,8 +16,9 @@ export interface KeyViewerProps {
 /**
  * KeyViewer component for displaying public key and providing key management actions
  * Ensures private key is never displayed in the UI
+ * Memoized to prevent unnecessary re-renders
  */
-export const KeyViewer: React.FC<KeyViewerProps> = ({
+export const KeyViewer = memo<KeyViewerProps>(function KeyViewer({
   publicKey,
   onGenerate,
   onCopy,
@@ -26,7 +27,7 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
   error,
   copySuccess,
   clearSuccess,
-}) => {
+}) {
   return (
     <div className="space-y-4">
       {/* Error display */}
@@ -465,6 +466,6 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default KeyViewer;

@@ -1,1 +1,67 @@
 @import 'tailwindcss';
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize font rendering */
+body {
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize animations and transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Improve focus visibility for accessibility */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Optimize scrolling performance */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Optimize image loading */
+img {
+  loading: lazy;
+}
+
+/* Optimize button interactions */
+button {
+  touch-action: manipulation;
+}
+
+/* Improve text selection */
+.select-all {
+  user-select: all;
+}
+
+/* Optimize animations */
+.animate-spin {
+  will-change: transform;
+}
+
+/* Improve contrast for better accessibility */
+@media (prefers-contrast: high) {
+  .text-gray-600 {
+    color: #374151;
+  }
+  .text-gray-500 {
+    color: #6b7280;
+  }
+}

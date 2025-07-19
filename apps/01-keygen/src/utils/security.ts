@@ -91,7 +91,10 @@ export function generateSecureRandomString(length: number): string {
     crypto.getRandomValues(randomBytes);
 
     for (let i = 0; i < length; i++) {
-      result += chars[randomBytes[i] % chars.length];
+      const byte = randomBytes[i];
+      if (byte !== undefined) {
+        result += chars[byte % chars.length];
+      }
     }
   } else {
     // Fallback to Math.random (less secure but better than nothing)

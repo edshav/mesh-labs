@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 /**
- * Custom hook for managing keypair state
+ * Custom hook for managing keypair state with optimized callbacks
  */
 export function useKeyPairState() {
   const [publicKeyDisplay, setPublicKeyDisplay] = useState<string | null>(null);
@@ -9,9 +9,9 @@ export function useKeyPairState() {
   const [error, setError] = useState<string | null>(null);
   const [clearSuccess, setClearSuccess] = useState<string | null>(null);
 
-  const clearError = () => setError(null);
+  const clearError = useCallback(() => setError(null), []);
 
-  const setLoadingState = (loading: boolean) => setIsLoading(loading);
+  const setLoadingState = useCallback((loading: boolean) => setIsLoading(loading), []);
 
   return {
     publicKeyDisplay,

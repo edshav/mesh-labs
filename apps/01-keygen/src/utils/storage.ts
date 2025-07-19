@@ -15,7 +15,9 @@ export class StorageError extends Error {
   constructor(message: string, cause?: Error) {
     super(message);
     this.name = 'StorageError';
-    this.cause = cause;
+    if (cause) {
+      this.cause = cause;
+    }
   }
 }
 
@@ -238,8 +240,8 @@ function logSecurityEvent(event: string, metadata: Record<string, unknown>): voi
         ...metadata,
         // Sanitize any potentially sensitive data
         userAgent:
-          typeof metadata.userAgent === 'string' && metadata.userAgent
-            ? metadata.userAgent.substring(0, 50)
+          typeof metadata['userAgent'] === 'string' && metadata['userAgent']
+            ? metadata['userAgent'].substring(0, 50)
             : undefined,
       },
     });

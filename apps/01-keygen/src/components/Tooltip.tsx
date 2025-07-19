@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo, useCallback } from 'react';
 
 interface TooltipProps {
   content: string | React.ReactNode;
@@ -10,21 +10,22 @@ interface TooltipProps {
 
 /**
  * Tooltip component for displaying educational information about cryptographic concepts
+ * Memoized to prevent unnecessary re-renders
  */
-export const Tooltip: React.FC<TooltipProps> = ({
+export const Tooltip = memo<TooltipProps>(function Tooltip({
   content,
   children,
   position = 'top',
   className = '',
   delay = 300,
-}) => {
+}) {
   const [isVisible, setIsVisible] = useState(false);
   const [showTimeout, setShowTimeout] = useState<number | null>(null);
   const [hideTimeout, setHideTimeout] = useState<number | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  const showTooltip = () => {
+  const showTooltip = useCallback(() => {
     if (hideTimeout) {
       clearTimeout(hideTimeout);
       setHideTimeout(null);
@@ -35,9 +36,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }, delay);
 
     setShowTimeout(timeout);
-  };
+  }, [hideTimeout, delay]);
 
-  const hideTooltip = () => {
+  const hideTooltip = useCallback(() => {
     if (showTimeout) {
       clearTimeout(showTimeout);
       setShowTimeout(null);
@@ -48,13 +49,13 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }, 100);
 
     setHideTimeout(timeout);
-  };
+  }, [showTimeout]);
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.key === 'Escape') {
       setIsVisible(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -118,6 +119,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default Tooltip;

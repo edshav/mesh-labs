@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 
 interface EducationalContentProps {
   className?: string;
@@ -7,13 +7,16 @@ interface EducationalContentProps {
 /**
  * Educational content component that provides information about Ed25519, Web Crypto API,
  * and security best practices
+ * Memoized to prevent unnecessary re-renders
  */
-export const EducationalContent: React.FC<EducationalContentProps> = ({ className = '' }) => {
+export const EducationalContent = memo<EducationalContentProps>(function EducationalContent({
+  className = '',
+}) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  const toggleSection = (section: string) => {
-    setActiveSection(activeSection === section ? null : section);
-  };
+  const toggleSection = useCallback((section: string) => {
+    setActiveSection((prev) => (prev === section ? null : section));
+  }, []);
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -349,6 +352,6 @@ export const EducationalContent: React.FC<EducationalContentProps> = ({ classNam
       </div>
     </div>
   );
-};
+});
 
 export default EducationalContent;
