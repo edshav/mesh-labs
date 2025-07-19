@@ -15,7 +15,7 @@ The Keygen Microapp is an educational React application that teaches users the f
 1. WHEN the user clicks the "Generate Keypair" button THEN the system SHALL create a new Ed25519 keypair using the Web Crypto API
 2. WHEN a keypair is generated THEN the system SHALL encode both public and private keys to Base64 format for storage and display
 3. WHEN keypair generation is successful THEN the system SHALL display the public key in the user interface
-4. WHEN keypair generation fails THEN the system SHALL display an appropriate error message to the user
+4. WHEN keypair generation fails THEN the system SHALL display a basic error message to the user
 
 ### Requirement 2
 
@@ -36,7 +36,7 @@ The Keygen Microapp is an educational React application that teaches users the f
 
 1. WHEN the user clicks the "Copy to Clipboard" button THEN the system SHALL copy the public key to the system clipboard
 2. WHEN the copy operation is successful THEN the system SHALL provide visual feedback confirming the copy action
-3. WHEN the copy operation fails THEN the system SHALL display an error message
+3. WHEN the copy operation fails THEN the system SHALL display a basic error message
 4. IF no public key exists THEN the copy button SHALL be disabled or hidden
 
 ### Requirement 4
@@ -72,4 +72,4 @@ The Keygen Microapp is an educational React application that teaches users the f
 2. WHEN storing private keys THEN the system SHALL only store them in the browser's localStorage
 3. WHEN the application runs THEN the system SHALL never transmit private keys over the network
 4. WHEN keys are cleared THEN the system SHALL ensure complete removal from all storage locations
-5. WHEN errors occur THEN the system SHALL never expose private key data in error messages or logs
+5. WHEN errors occur THEN the system SHALL never expose private key data in error messages
