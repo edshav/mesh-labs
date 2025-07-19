@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tooltip } from './Tooltip';
 
 // Props interface for KeyViewer component
 export interface KeyViewerProps {
@@ -128,7 +129,23 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
       {publicKey ? (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-700">Your Public Key</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-700">
+              Your{' '}
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Public Key:</strong> A cryptographic key that can be shared openly. It's
+                    used to verify digital signatures created with your private key, or to encrypt
+                    messages that only your private key can decrypt.
+                  </div>
+                }
+                position="bottom"
+              >
+                <span className="underline decoration-dotted decoration-blue-400 cursor-help">
+                  Public Key
+                </span>
+              </Tooltip>
+            </h2>
             <div className="flex items-center text-green-600">
               <svg
                 className="w-5 h-5 mr-1"
@@ -162,6 +179,24 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
             >
               {publicKey}
             </div>
+            <div className="mt-2 text-xs text-gray-500 flex items-center">
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Base64 Encoding:</strong> A method of encoding binary data into text
+                    using 64 printable ASCII characters. This makes the key safe to copy, paste, and
+                    transmit in text-based systems.
+                  </div>
+                }
+                position="top"
+              >
+                <span className="underline decoration-dotted decoration-gray-400 cursor-help">
+                  Base64 Format
+                </span>
+              </Tooltip>
+              <span className="mx-2">•</span>
+              <span>{publicKey.length} characters</span>
+            </div>
           </div>
 
           {/* Educational note */}
@@ -184,10 +219,26 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
               </svg>
               <div>
                 <p className="text-sm text-blue-800 font-medium mb-1">Security Information</p>
-                <p className="text-xs sm:text-sm text-blue-700">
+                <div className="text-xs sm:text-sm text-blue-700">
                   This is your public key in Base64 format. It's safe to share this key with others.
-                  Your private key is securely stored locally and never displayed or transmitted.
-                </p>
+                  Your{' '}
+                  <Tooltip
+                    content={
+                      <div>
+                        <strong>Private Key:</strong> The secret half of your keypair that must
+                        never be shared. It's used to create digital signatures and decrypt messages
+                        encrypted with your public key. Loss of your private key means loss of your
+                        cryptographic identity.
+                      </div>
+                    }
+                    position="top"
+                  >
+                    <span className="underline decoration-dotted decoration-blue-400 cursor-help">
+                      private key
+                    </span>
+                  </Tooltip>{' '}
+                  is securely stored locally and never displayed or transmitted.
+                </div>
               </div>
             </div>
           </div>
@@ -211,12 +262,57 @@ export const KeyViewer: React.FC<KeyViewerProps> = ({
               </svg>
             </div>
             <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
-              No Keypair Available
+              No{' '}
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Keypair:</strong> A matched set of cryptographic keys consisting of a
+                    public key (which can be shared) and a private key (which must be kept secret).
+                    Together, they enable secure communication and digital signatures.
+                  </div>
+                }
+                position="top"
+              >
+                <span className="underline decoration-dotted decoration-gray-400 cursor-help">
+                  Keypair
+                </span>
+              </Tooltip>{' '}
+              Available
             </h3>
-            <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
-              Generate a new Ed25519 keypair to get started with cryptographic operations. Your keys
-              will be generated securely in your browser.
-            </p>
+            <div className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
+              Generate a new{' '}
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Ed25519:</strong> A modern elliptic curve digital signature algorithm
+                    that provides high security with excellent performance. It's widely used in
+                    modern cryptographic systems and produces 32-byte keys.
+                  </div>
+                }
+                position="top"
+              >
+                <span className="underline decoration-dotted decoration-gray-400 cursor-help">
+                  Ed25519
+                </span>
+              </Tooltip>{' '}
+              keypair to get started with cryptographic operations. Your keys will be generated
+              securely in your browser using the{' '}
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Web Crypto API:</strong> A browser standard that provides secure,
+                    hardware-accelerated cryptographic operations. It ensures your keys are
+                    generated using the browser's secure, audited cryptographic implementation.
+                  </div>
+                }
+                position="top"
+              >
+                <span className="underline decoration-dotted decoration-gray-400 cursor-help">
+                  Web Crypto API
+                </span>
+              </Tooltip>
+              .
+            </div>
           </div>
         </div>
       )}

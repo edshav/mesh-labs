@@ -16,7 +16,12 @@ describe('KeyViewer', () => {
   it('should render without public key', () => {
     render(<KeyViewer {...mockProps} />);
 
-    expect(screen.getByText('No Keypair Available')).toBeInTheDocument();
+    // Use a function matcher to handle text split by tooltips
+    expect(
+      screen.getByText((_content, element) => {
+        return element?.textContent === 'No Keypair Available';
+      })
+    ).toBeInTheDocument();
     expect(screen.getByText('Generate Keypair')).toBeInTheDocument();
   });
 
@@ -28,7 +33,12 @@ describe('KeyViewer', () => {
 
     render(<KeyViewer {...propsWithKey} />);
 
-    expect(screen.getByText('Your Public Key')).toBeInTheDocument();
+    // Use a function matcher to handle text split by tooltips
+    expect(
+      screen.getByText((_content, element) => {
+        return element?.textContent === 'Your Public Key';
+      })
+    ).toBeInTheDocument();
     expect(screen.getByText('test-public-key-base64')).toBeInTheDocument();
     expect(screen.getByText('Copy to Clipboard')).toBeInTheDocument();
     expect(screen.getByText('Clear Stored Keypair')).toBeInTheDocument();
